@@ -2,15 +2,15 @@
 
 A new Flutter project.
 
-## Getting Started
+## Crear cuenta en Mapbox
 
-This project is a starting point for a Flutter application.
+- Entrar a **https://www.mapbox.com**
+- Crear una cuenta o iniciar sessión
+- En el apartado de **Tokens**, crear un **token público** para la aplicación, y un **token privado** (este último debe tener un ámbito secreto del tipo **DOWNLOADS:READ**)
 
-A few resources to get you started if this is your first Flutter project:
+## Asociar Mapbox al proyecto Flutter
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Descargar el plugin oficial de Mapbox desde repositorio de paquetes de Dart: **https://pub.dev/packages/mapbox_gl**
+- Seguir las instrucciones del proovedor del paquete (tanto para Android como para iOS)
+- Para proyectos en producción, se recomienda no publicar los TOKENS en repositorios de como Github. Para ello es importante verificar como podemos declararlos desde llamdas a archivos de variables de entorno
+- Ver ejemplos de implementación en **https://github.com/flutter-mapbox-gl/maps/tree/master/example/lib**
