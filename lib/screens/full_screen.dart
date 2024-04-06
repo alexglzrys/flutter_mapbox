@@ -14,6 +14,8 @@ class _FullScreenState extends State<FullScreen> {
   MapboxMapController? mapController;
 
   //var isLight = true;
+
+  // Propiedades que almacenan URL que apuntan a los estilos personalizados para este mapa
   final String styleStreets =
       'mapbox://styles/jsconestilo/cluodqqsj014r01pbgllt6mrt';
   final String styleSatellite =
@@ -25,29 +27,46 @@ class _FullScreenState extends State<FullScreen> {
   }
 
   _onStyleLoadedCallback() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Style loaded :)"),
       backgroundColor: Theme.of(context).primaryColor,
       duration: const Duration(seconds: 1),
-    ));
+    ));*/
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: mapa(),
-      // Cambiar el tipo de esquema o estilo de mapa
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (styleDefault == styleStreets) {
-            styleDefault = styleSatellite;
-          } else {
-            styleDefault = styleStreets;
-          }
-          setState(() {});
-        },
-        child: Icon(Icons.find_replace_outlined),
-      ),
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        // Botón para Zoom In
+        FloatingActionButton(
+            onPressed: () {
+              mapController!.animateCamera(CameraUpdate.zoomIn());
+            },
+            child: const Icon(Icons.zoom_in)),
+        const SizedBox(height: 8),
+        // Botón para Zoom Out
+        FloatingActionButton(
+            onPressed: () {
+              mapController!.animateCamera(CameraUpdate.zoomOut());
+            },
+            child: const Icon(Icons.zoom_out)),
+        const SizedBox(height: 8),
+        // Cambiar el tipo de esquema o estilo de mapa
+        FloatingActionButton(
+          onPressed: () {
+            if (styleDefault == styleStreets) {
+              styleDefault = styleSatellite;
+            } else {
+              styleDefault = styleStreets;
+            }
+            setState(() {});
+          },
+          child: const Icon(Icons.style),
+        ),
+      ]),
     );
   }
 
@@ -64,6 +83,8 @@ class _FullScreenState extends State<FullScreen> {
       onMapCreated: _onMapCreated,
       initialCameraPosition: const CameraPosition(
         target: LatLng(19.281610, -99.662491),
+        // Inclinación del mapa Eje Z
+        tilt: 60,
         zoom: 16,
       ),
       onStyleLoadedCallback: _onStyleLoadedCallback,
