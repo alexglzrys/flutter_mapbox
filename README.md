@@ -26,3 +26,9 @@ Desde el sitio web de Mapbox, se pueden personalizar diferentes estilos de mapa 
 - Publicar nuevo estilo
 - Compartir
 - Copiar la URL que apunta al nuevo estilo generado y usarla dentro de nuestra aplicación.
+
+## Iconos
+
+Se pueden agregar diferentes símbolos o marcadores sobre el mapa, Mapbox ya nos tiene cubiertos con un conjunto de iconos para usar
+
+- En **https://github.com/mapbox/mapbox-gl-styles** encontramos los distintos nombres de los diferentes iconos que podemos usar, solo que, para algunos de ellos es importante omitir el sufijo numérico al momento de invocarlos, ya que de lo contrario, no se mostraran. por ejemplo **fast-food-15** de ser invocado como **fast-food**

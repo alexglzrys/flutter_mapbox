@@ -14,7 +14,8 @@ class _FullScreenState extends State<FullScreen> {
   MapboxMapController? mapController;
 
   //var isLight = true;
-
+  // Propiedad que especifica las coordenadas centrales a mostrar en el mapa
+  final LatLng center = LatLng(19.281610, -99.662491);
   // Propiedades que almacenan URL que apuntan a los estilos personalizados para este mapa
   final String styleStreets =
       'mapbox://styles/jsconestilo/cluodqqsj014r01pbgllt6mrt';
@@ -40,6 +41,18 @@ class _FullScreenState extends State<FullScreen> {
       body: mapa(),
       floatingActionButton:
           Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        // Botón para crear un Símbolo (objeto o marcador sobre el mapa)
+        FloatingActionButton(
+            onPressed: () {
+              mapController!.addSymbol(SymbolOptions(
+                  textField: 'Tortas el Pingüno',
+                  iconImage: 'fast-food',
+                  geometry: center,
+                  textOffset: const Offset(0, 2.5),
+                  iconSize: 3));
+            },
+            child: const Icon(Icons.emoji_symbols_sharp)),
+        const SizedBox(height: 8),
         // Botón para Zoom In
         FloatingActionButton(
             onPressed: () {
@@ -81,11 +94,11 @@ class _FullScreenState extends State<FullScreen> {
       accessToken:
           'pk.eyJ1IjoianNjb25lc3RpbG8iLCJhIjoiY2x1b2J2OGx3MGd4dDJqcDdjbjg2eGZhaSJ9.uODlj3lavhP8Yv3syuS17A',
       onMapCreated: _onMapCreated,
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(19.281610, -99.662491),
+      initialCameraPosition: CameraPosition(
+        target: center,
         // Inclinación del mapa Eje Z
         tilt: 60,
-        zoom: 16,
+        zoom: 17,
       ),
       onStyleLoadedCallback: _onStyleLoadedCallback,
     );
