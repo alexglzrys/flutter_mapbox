@@ -12,7 +12,13 @@ class FullScreen extends StatefulWidget {
 
 class _FullScreenState extends State<FullScreen> {
   MapboxMapController? mapController;
-  var isLight = true;
+
+  //var isLight = true;
+  final String styleStreets =
+      'mapbox://styles/jsconestilo/cluodqqsj014r01pbgllt6mrt';
+  final String styleSatellite =
+      'mapbox://styles/jsconestilo/cluofycw7054v01qq4rtmd931';
+  String styleDefault = 'mapbox://styles/jsconestilo/cluodqqsj014r01pbgllt6mrt';
 
   _onMapCreated(MapboxMapController controller) {
     mapController = controller;
@@ -29,10 +35,30 @@ class _FullScreenState extends State<FullScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // Widget oficial de Mapbox
-        // Ejemplos en... https://github.com/flutter-mapbox-gl/maps/blob/master/example/lib/full_map.dart
-        body: MapboxMap(
-      styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
+      body: mapa(),
+      // Cambiar el tipo de esquema o estilo de mapa
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (styleDefault == styleStreets) {
+            styleDefault = styleSatellite;
+          } else {
+            styleDefault = styleStreets;
+          }
+          setState(() {});
+        },
+        child: Icon(Icons.find_replace_outlined),
+      ),
+    );
+  }
+
+  MapboxMap mapa() {
+    // Widget oficial de Mapbox
+    // Ejemplos en... https://github.com/flutter-mapbox-gl/maps/blob/master/example/lib/full_map.dart
+    return MapboxMap(
+      //styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
+
+      // Los estilos de mapa se pueden personalizar desde el sitio Web de Mapbox - sección studio
+      styleString: styleDefault,
       accessToken:
           'pk.eyJ1IjoianNjb25lc3RpbG8iLCJhIjoiY2x1b2J2OGx3MGd4dDJqcDdjbjg2eGZhaSJ9.uODlj3lavhP8Yv3syuS17A',
       onMapCreated: _onMapCreated,
@@ -41,6 +67,6 @@ class _FullScreenState extends State<FullScreen> {
         zoom: 16,
       ),
       onStyleLoadedCallback: _onStyleLoadedCallback,
-    ));
+    );
   }
 }
