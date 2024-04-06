@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:http/http.dart' as http;
 
 // Widget que hace referencia al mapa mostrado a pantalla completa
 // Dada la interactividad del mapa, se recomienda hacer uso de widgets con estado
@@ -15,7 +19,7 @@ class _FullScreenState extends State<FullScreen> {
 
   //var isLight = true;
   // Propiedad que especifica las coordenadas centrales a mostrar en el mapa
-  final LatLng center = LatLng(19.281610, -99.662491);
+  final LatLng center = const LatLng(19.281610, -99.662491);
   // Propiedades que almacenan URL que apuntan a los estilos personalizados para este mapa
   final String styleStreets =
       'mapbox://styles/jsconestilo/cluodqqsj014r01pbgllt6mrt';
@@ -25,6 +29,7 @@ class _FullScreenState extends State<FullScreen> {
 
   _onMapCreated(MapboxMapController controller) {
     mapController = controller;
+    _onStyleLoaded();
   }
 
   _onStyleLoadedCallback() {
@@ -33,6 +38,29 @@ class _FullScreenState extends State<FullScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       duration: const Duration(seconds: 1),
     ));*/
+  }
+
+  // Método para crear símbolos personalizados.
+  // (El nombre asignado se corresponderá con el nombre de este símbolo)
+  void _onStyleLoaded() {
+    // Crear un símbolo a partir de un recurso de imagen en nuestro proyecto
+    addImageFromAsset("assetImage", "assets/images/symbols/partly_cloudy.png");
+    // Crear un símbolo a partir de un recurso de imagen desde Internet
+    addImageFromUrl(
+        "networkImage", Uri.parse("https://via.placeholder.com/50"));
+  }
+
+  /// Cargar una imagen usada como símbolo desde el directorio del proyecto
+  Future<void> addImageFromAsset(String name, String assetName) async {
+    final ByteData bytes = await rootBundle.load(assetName);
+    final Uint8List list = bytes.buffer.asUint8List();
+    return mapController!.addImage(name, list);
+  }
+
+  /// Cardar una imagen usada como símbolo desde una URL
+  Future<void> addImageFromUrl(String name, Uri uri) async {
+    var response = await http.get(uri);
+    return mapController!.addImage(name, response.bodyBytes);
   }
 
   @override
@@ -46,7 +74,10 @@ class _FullScreenState extends State<FullScreen> {
             onPressed: () {
               mapController!.addSymbol(SymbolOptions(
                   textField: 'Tortas el Pingüno',
-                  iconImage: 'fast-food',
+                  // iconImage: 'fast-food',
+
+                  // usar un recurso de imagen externo para personalizar el nuevo símbolo
+                  iconImage: 'assetImage',
                   geometry: center,
                   textOffset: const Offset(0, 2.5),
                   iconSize: 3));
